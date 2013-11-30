@@ -1,0 +1,4 @@
+C:\Users\nobu\Documents\SVN\OpencvSharp\OpenCvSharp.UserInterface\obj\x64\Debug\OpenCvSharp.UserInterface.csprojResolveAssemblyReference.cache
+C:\Users\nobu\Documents\SVN\OpencvSharp\OpenCvSharp.UserInterface\obj\x64\Debug\OpenCvSharp.UserInterface.CvWindowEx.resources
+C:\Users\nobu\Documents\SVN\OpencvSharp\OpenCvSharp.UserInterface\obj\x64\Debug\OpenCvSharp.UserInterface.TrackbarWithLabel.resources
+C:\Users\nobu\Documents\SVN\OpencvSharp\OpenCvSharp.UserInterface\obj\x64\Debug\OpenCvSharp.UserInterface.csproj.GenerateResource.Cache

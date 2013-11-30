@@ -1,0 +1,4 @@
+C:\Users\nobu\Documents\SVN\OpencvSharp\OpenCvSharp.DebuggerVisualizers\obj\x64\Debug\OpenCvSharp.DebuggerVisualizers.csprojResolveAssemblyReference.cache
+C:\Users\nobu\Documents\SVN\OpencvSharp\OpenCvSharp.DebuggerVisualizers\obj\x64\Debug\OpenCvSharp.DebuggerVisualizers.CvMatViewer.resources
+C:\Users\nobu\Documents\SVN\OpencvSharp\OpenCvSharp.DebuggerVisualizers\obj\x64\Debug\OpenCvSharp.DebuggerVisualizers.IplImageViewer.resources
+C:\Users\nobu\Documents\SVN\OpencvSharp\OpenCvSharp.DebuggerVisualizers\obj\x64\Debug\OpenCvSharp.DebuggerVisualizers.csproj.GenerateResource.Cache

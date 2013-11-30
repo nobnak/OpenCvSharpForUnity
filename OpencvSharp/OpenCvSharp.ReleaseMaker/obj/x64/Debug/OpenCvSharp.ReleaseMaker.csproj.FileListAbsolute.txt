@@ -1,0 +1,9 @@
+C:\Users\nobu\Documents\SVN\OpencvSharp\OpenCvSharp.ReleaseMaker\obj\x64\Debug\OpenCvSharp.ReleaseMaker.csprojResolveAssemblyReference.cache
+C:\Users\nobu\Documents\SVN\OpencvSharp\OpenCvSharp.ReleaseMaker\obj\x64\Debug\OpenCvSharp.ReleaseMaker.MainForm.resources
+C:\Users\nobu\Documents\SVN\OpencvSharp\OpenCvSharp.ReleaseMaker\obj\x64\Debug\OpenCvSharp.ReleaseMaker.Properties.Resources.resources
+C:\Users\nobu\Documents\SVN\OpencvSharp\OpenCvSharp.ReleaseMaker\obj\x64\Debug\OpenCvSharp.ReleaseMaker.csproj.GenerateResource.Cache
+C:\Users\nobu\Documents\SVN\OpencvSharp\OpenCvSharp.ReleaseMaker\bin\x64\Debug\OpenCvSharp.ReleaseMaker.exe
+C:\Users\nobu\Documents\SVN\OpencvSharp\OpenCvSharp.ReleaseMaker\bin\x64\Debug\OpenCvSharp.ReleaseMaker.pdb
+C:\Users\nobu\Documents\SVN\OpencvSharp\OpenCvSharp.ReleaseMaker\bin\x64\Debug\Ionic.Zip.dll
+C:\Users\nobu\Documents\SVN\OpencvSharp\OpenCvSharp.ReleaseMaker\obj\x64\Debug\OpenCvSharp.ReleaseMaker.exe
+C:\Users\nobu\Documents\SVN\OpencvSharp\OpenCvSharp.ReleaseMaker\obj\x64\Debug\OpenCvSharp.ReleaseMaker.pdb

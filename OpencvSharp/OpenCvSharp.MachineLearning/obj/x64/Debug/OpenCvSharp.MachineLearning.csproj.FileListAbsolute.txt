@@ -1,0 +1,1 @@
+C:\Users\nobu\Documents\SVN\OpencvSharp\OpenCvSharp.MachineLearning\obj\x64\Debug\OpenCvSharp.MachineLearning.csprojResolveAssemblyReference.cache

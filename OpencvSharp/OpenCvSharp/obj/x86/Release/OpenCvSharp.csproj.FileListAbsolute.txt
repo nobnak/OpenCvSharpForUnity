@@ -1,0 +1,8 @@
+C:\Users\nobu\Documents\SVN\OpencvSharp\OpenCvSharp\bin\x86\Release\OpenCvSharp.dll.config
+C:\Users\nobu\Documents\SVN\OpencvSharp\OpenCvSharp\bin\x86\Release\LGPL.txt
+C:\Users\nobu\Documents\SVN\OpencvSharp\OpenCvSharp\bin\x86\Release\ReadMe.txt
+C:\Users\nobu\Documents\SVN\OpencvSharp\OpenCvSharp\bin\x86\Release\OpenCvSharp.XML
+C:\Users\nobu\Documents\SVN\OpencvSharp\OpenCvSharp\bin\x86\Release\OpenCvSharp.dll
+C:\Users\nobu\Documents\SVN\OpencvSharp\OpenCvSharp\bin\x86\Release\OpenCvSharp.pdb
+C:\Users\nobu\Documents\SVN\OpencvSharp\OpenCvSharp\obj\x86\Release\OpenCvSharp.dll
+C:\Users\nobu\Documents\SVN\OpencvSharp\OpenCvSharp\obj\x86\Release\OpenCvSharp.pdb
