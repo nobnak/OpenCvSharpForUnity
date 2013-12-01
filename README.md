@@ -19,7 +19,8 @@ Unity 版 Mono で動作するように変更した [OpenCVSharp](https://code.g
 
  - [OpenCVSharp.dll](Example/Assets/Plugins/)
  - OpenCVSharp.dll.config
- - 
+
 動かない場合は以下を確認する
+
  - OpenCV の DLL に　PATH が通っているか
  - OpenCVShapr.dll.config の DLL 名は正しいか
