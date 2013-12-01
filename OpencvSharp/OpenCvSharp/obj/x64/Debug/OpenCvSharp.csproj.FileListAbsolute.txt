@@ -1,8 +1,0 @@
-C:\Users\nobu\Documents\SVN\OpencvSharp\OpenCvSharp\bin\x64\Debug\OpenCvSharp.dll.config
-C:\Users\nobu\Documents\SVN\OpencvSharp\OpenCvSharp\bin\x64\Debug\LGPL.txt
-C:\Users\nobu\Documents\SVN\OpencvSharp\OpenCvSharp\bin\x64\Debug\ReadMe.txt
-C:\Users\nobu\Documents\SVN\OpencvSharp\OpenCvSharp\bin\x64\Debug\OpenCvSharp.dll
-C:\Users\nobu\Documents\SVN\OpencvSharp\OpenCvSharp\bin\x64\Debug\OpenCvSharp.pdb
-C:\Users\nobu\Documents\SVN\OpencvSharp\OpenCvSharp\bin\x64\Debug\OpenCvSharp.XML
-C:\Users\nobu\Documents\SVN\OpencvSharp\OpenCvSharp\obj\x64\Debug\OpenCvSharp.dll
-C:\Users\nobu\Documents\SVN\OpencvSharp\OpenCvSharp\obj\x64\Debug\OpenCvSharp.pdb
