@@ -7,8 +7,8 @@ Unity 版 Mono で動作するように変更した [OpenCVSharp](https://code.g
 ## 準備
 このライブラリのコンパイル、Unity上での実行には以下が必要です。
 
- ― [OepnCV 2.4.5](http://opencv.org/downloads.html) のコンパイル/インストール (コンパイル時は 32bit 版 DLL を作成)
- ― 上記のDLLディレクトリへのPATH環境変数の設定
+ - [OepnCV 2.4.5](http://opencv.org/downloads.html) のコンパイル/インストール (コンパイル時は 32bit 版 DLL を作成)
+ - 上記のDLLディレクトリへのPATH環境変数の設定
  - (Windows 以外で DLL 名が) OpenCVSharp.dll.config に記述された dllmap の target DLL名変更
 
 ## ビルド
