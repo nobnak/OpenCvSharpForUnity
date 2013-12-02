@@ -15,13 +15,13 @@ public class TestDll : MonoBehaviour {
 	void Start () {
 		_tex = new Texture2D(0, 0);
 		renderer.sharedMaterial.mainTexture = _tex;
-		_cap = new CvCapture(0);
+		//_cap = new CvCapture(0);
 
-		//Test01();
+		Test01();
 	}
 
 	void Update() {
-		Test02 ();
+		//Test02 ();
 	}
 
 	void OnDestroy() {
@@ -41,7 +41,7 @@ public class TestDll : MonoBehaviour {
 		using (var src = new IplImage(BuildPath(srcImagePath), LoadMode.GrayScale))
 		using (var dst = new IplImage(src.Size, BitDepth.U8, 1)) {
 			src.Canny(dst, 50, 200);
-			dst.SaveImage(BuildPath(dstImagePath));
+			ShowImage(dst);
 		}
 	}
 
@@ -50,9 +50,13 @@ public class TestDll : MonoBehaviour {
 			if (_tmpImage == null)
 				_tmpImage = new IplImage(image.Size, image.Depth, 1);
 			image.Canny(_tmpImage, 50, 200);
-			var pngBytes = _tmpImage.ToBytes(".png");
-			_tex.LoadImage(pngBytes);
+			ShowImage(_tmpImage);
 		}
+	}
+
+	public void ShowImage(IplImage image) {
+		var pngBytes = image.ToBytes(".png");
+		_tex.LoadImage(pngBytes);
 	}
 
 	public string BuildPath(string filename) {

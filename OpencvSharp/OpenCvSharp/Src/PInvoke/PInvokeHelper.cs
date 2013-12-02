@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Windows.Forms;
 
 namespace OpenCvSharp.Utilities
 {
@@ -53,26 +52,22 @@ namespace OpenCvSharp.Utilities
             string nl = Environment.NewLine;
             if (System.Globalization.CultureInfo.CurrentCulture.Name.Contains("ja"))
             {
-                MessageBox.Show(
+                Console.WriteLine(
                     "P/Invokeが原因で例外が発生しました。" + nl + "以下の項目を確認して下さい。" + nl + nl +
                     "1. OpenCVのDLLが実行ファイルと同じ場所に置かれていますか? またはパスが正しく通っていますか?" + nl +
                     "2. Visual C++ Redistributable Packageをインストールしましたか?" + nl +
                     "3. OpenCVのDLLやOpenCvSharpの対象プラットフォーム(x86またはx64)と、プロジェクトのプラットフォーム設定が合っていますか?" + nl + nl +
-                    e.ToString(),
-                    "OpenCvSharp Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error
+                    e.ToString()
                 );
             }
             else
             {
-                MessageBox.Show(
+                Console.WriteLine(
                     "An exception has occurred because of P/Invoke." + nl + "Please check the following:" + nl + nl +
                     "1. OpenCV's DLL files exist in the same directory as the executable file." + nl +
                     "2. Visual C++ Redistributable Package has been installed." + nl +
                     "3. The target platform(x86/x64) of OpenCV's DLL files and OpenCvSharp is the same as your project's." + nl + nl +
-                    e.ToString(),
-                    "OpenCvSharp Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error
+                    e.ToString()
                 );
             }
             throw e;
