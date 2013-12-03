@@ -1,8 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/TestDll.cs">
     <Files>
-      <File FileName="Assets/TestDll.cs" Line="16" Column="5" />
+      <File FileName="Assets/TestDll.cs" Line="59" Column="27" />
+      <File FileName="../OpencvSharp/OpenCvSharp/Src/Core/Cv_G.cs" Line="2355" Column="19" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
