@@ -1,8 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/FeatureTest.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="OpenCvSharp/Src/CvArr/IplImage.cs">
     <Files>
-      <File FileName="Assets/FeatureTest.cs" Line="73" Column="1" />
+      <File FileName="OpenCvSharp/Src/PInvoke/CvInvoke.cs" Line="314" Column="72" />
+      <File FileName="OpenCvSharp/Src/Core/Cv_G.cs" Line="2522" Column="37" />
+      <File FileName="OpenCvSharp/Src/CvArr/IplImage.cs" Line="25" Column="18" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
