@@ -5,14 +5,12 @@ Unity 版 Mono で動作するように変更した [OpenCVSharp](https://code.g
 
 # 使い方
 ## 準備
-Windows と Mac で分けて説明します
-
-### Windows 版
+#### Windows 版
  - [OepnCV 2.4.5](http://opencv.org/downloads.html) のコンパイル/インストール (コンパイル時は 32bit 版 DLL を作成)
  - 上記のDLLディレクトリへのPATH環境変数の設定
 
-### Mac 版
- - MacPorts から opencv 2.4.x を "+univeral" オプション付きでインストール
+#### Mac 版
+ - MacPorts から opencv 2.4.x を "+universal" オプション付きでインストール
  - config ファイルにDLLのパスを追加(場所:/Applications/Unity/Unity.app/Contents/Frameworks/Mono/etc/mono/config)
 
 ```
