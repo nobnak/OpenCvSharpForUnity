@@ -11,7 +11,7 @@ Unity 版 Mono で動作するように変更した [OpenCVSharp](https://code.g
 
 #### Mac 版
  - MacPorts から opencv 2.4.x を "+universal" オプション付きでインストール
- - config ファイルにDLLのパスを追加(場所:/Applications/Unity/Unity.app/Contents/Frameworks/Mono/etc/mono/config)
+ - config ファイルにDLLのパスを追加(場所 /Applications/Unity/Unity.app/Contents/Frameworks/Mono/etc/mono/config)
 
 ```
 <dllmap os="osx" dll="opencv_calib3d245" target="/opt/local/lib/libopencv_calib3d.dylib" />
