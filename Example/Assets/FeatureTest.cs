@@ -10,6 +10,7 @@ public class FeatureTest : MonoBehaviour {
 	public float qualityLevel = 0.01f;
 	public float minDistance = 0.01f;
 	public Color lineColor;
+	public bool useSubPix;
 
 	private Texture2D _tex;
 	private CvCapture _cap;
@@ -20,17 +21,35 @@ public class FeatureTest : MonoBehaviour {
 	private CvPoint2D32f[] _corners;
 	private int _nCorners;
 
+	private CvSize _subPixWinSize, _subPixZeroZone;
+	private CvTermCriteria _termCrit;
+
 	// Use this for initialization
 	void Start () {
 		_tex = new Texture2D(0, 0);
 		target.renderer.sharedMaterial.mainTexture = _tex;
-		_cap = new CvCapture(0);
 
-		InitTest02();
+		_cap = new CvCapture(0);
+		using (var image = _cap.QueryFrame()) {
+			_capImage = new IplImage(image.Size, BitDepth.U8, 1);
+			_eigImage = new IplImage(image.Size, BitDepth.F32, 1);
+			_tmpImage = new IplImage(image.Size, BitDepth.F32, 1);
+		}
+
+		_termCrit = new CvTermCriteria(CriteriaType.Iteration | CriteriaType.Epsilon, 20, 0.03);
+		_subPixWinSize = new CvSize(10, 10);
+		_subPixZeroZone = new CvSize(-1, -1);
 	}
 
 	void Update() {
-		Test02 ();
+		using (var image = _cap.QueryFrame()) {
+			Cv.ConvertImage(image, _capImage, 0);
+			_nCorners = maxCorners;
+			Cv.GoodFeaturesToTrack(_capImage, _eigImage, _tmpImage, out _corners, ref _nCorners, qualityLevel, minDistance);
+			if (useSubPix)
+				Cv.FindCornerSubPix(_capImage, _corners, _nCorners, _subPixWinSize, _subPixZeroZone, _termCrit);
+			ShowImage (_capImage);
+		}
 	}
 
 	void OnPostRender() {
@@ -56,23 +75,6 @@ public class FeatureTest : MonoBehaviour {
 		}
 
 		Destroy(_tex);
-	}
-
-	void InitTest02() {
-		using (var image = _cap.QueryFrame()) {
-			_capImage = new IplImage(image.Size, BitDepth.U8, 1);
-			_eigImage = new IplImage(image.Size, BitDepth.F32, 1);
-			_tmpImage = new IplImage(image.Size, BitDepth.F32, 1);
-		}
-	}
-
-	void Test02() {
-		using (var image = _cap.QueryFrame()) {
-			Cv.ConvertImage(image, _capImage, 0);
-			_nCorners = maxCorners;
-			Cv.GoodFeaturesToTrack(_capImage, _eigImage, _tmpImage, out _corners, ref _nCorners, qualityLevel, minDistance);
-			ShowImage (_capImage);
-		}
 	}
 
 	public void ShowImage(IplImage image) {
