@@ -21,7 +21,7 @@ public class OpticalFlowTest : MonoBehaviour {
 
 	void Start () {
 		_worker = GetComponent<OpticalFlowWorker>();
-		_tex = new Texture2D(0, 0);
+		_tex = new Texture2D(0, 0, TextureFormat.RGB24, false);
 		target.renderer.sharedMaterial.mainTexture = _tex;
 
 		var targetScale = target.transform.localScale;
@@ -79,7 +79,10 @@ public class OpticalFlowTest : MonoBehaviour {
 	}
 
 	public void ShowImage(OpticalFlowWorker.AsyncResult r) {
-		_tex.LoadImage(r.imageData);
+		if (_tex.width != r.imageWidth || _tex.height != r.imageHeight)
+			_tex.Resize(r.imageWidth, r.imageHeight);
+		_tex.LoadRawTextureData(r.imageData);
+		_tex.Apply();
 	}
 	public void ShowCrosshair(OpticalFlowWorker.AsyncResult r) {
 		GL.PushMatrix();
