@@ -45,7 +45,6 @@ public class Vector : MonoBehaviour {
 	}
 
 	void OnPostRender() {
-		//ShowCrosshair(_prevResult);
 		ShowOpticalFlow(_prevResult);
 	}
 
@@ -85,5 +84,39 @@ public class Vector : MonoBehaviour {
 		mesh.vertices = vertices;
 		mesh.SetIndices(lines, MeshTopology.Lines, 0);
 		mesh.bounds = new Bounds(Vector3.zero, float.MaxValue * Vector3.one);
+	}
+
+	public void GenerateLattice(int width, int height, float space, out CvPoint2D32f[] corners, out Vector3[] vertices, out int[] triangles) {
+		var nx = (int)(width / space);
+		var ny = (int)(height / space);
+		var offset = space * 0.5f;
+		var rTexelSize = new Vector2(1f / width, 1f / height);
+
+		corners = new CvPoint2D32f[nx * ny];
+		vertices = new Vector3[corners.Length];
+		triangles = new int[6 * (nx - 1) * (ny - 1)];
+
+		for (var y = 0; y < ny; y++) {
+			for (var x = 0; x < nx; x++) {
+				var index = x + y * nx;
+				var c = new CvPoint2D32f(offset + x * space, offset + y * space);
+				var v = new Vector3(c.X * rTexelSize.x - 0.5f,  -(c.Y * rTexelSize.y - 0.5f), 0f);
+				corners[index] = c;
+				vertices[index] = v;
+			}
+		}
+
+		var iTriangle = 0;
+		for (var y = 0; y < (ny - 1); y++) {
+			for (var x = 0; x < (nx - 1); x++) {
+				var index = x + y * nx;
+				triangles[iTriangle++] = index;
+				triangles[iTriangle++] = index + 1;
+				triangles[iTriangle++] = index + 1 + nx;
+				triangles[iTriangle++] = index;
+				triangles[iTriangle++] = index + 1 + nx;
+				triangles[iTriangle++] = index + nx;
+			}
+		}
 	}
 }
