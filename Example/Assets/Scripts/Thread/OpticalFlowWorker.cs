@@ -6,13 +6,11 @@ using System.Threading;
 using System.Runtime.InteropServices;
 
 public class OpticalFlowWorker : MonoBehaviour {
-	public int featureCount = 10;
-	public float featureQuality = 0.01f;
-	public float featureMinDist = 0.01f;
 	public int opticalFlowPyramid = 3;
 	public int opticalFlowWinSize = 10;
-
-	public Vector2 CaptureSize { get; private set; }
+	public float featureSpace = 50f;
+	public int ofCritIterations = 20;
+	public float ofCritError = 0.01f;
 
 	private CvCapture _cap;
 	private IplImage _capImage, _capRgbImage;
@@ -36,10 +34,10 @@ public class OpticalFlowWorker : MonoBehaviour {
 
 	void Awake () {
 		_cap = new CvCapture(0);
+
 		_capImage = _cap.QueryFrame();
 		_capRgbImage = new IplImage(_capImage.Width, _capImage.Height, BitDepth.U8, 3);
 		Debug.Log(string.Format("Capture info : size{0}", _capImage.Size));
-		CaptureSize = new Vector2(_capImage.Width, _capImage.Height);
        	_capGrayImage0 = new IplImage(_capImage.Size, BitDepth.U8, 1);
 		_capGrayImage1 = new IplImage(_capImage.Size, BitDepth.U8, 1);
 		_pyramidImage0 = new IplImage(new CvSize(_capImage.Width + 8, _capImage.Height/3), BitDepth.U8, 1);
@@ -47,8 +45,10 @@ public class OpticalFlowWorker : MonoBehaviour {
 		_eigImage = new IplImage(_capImage.Size, BitDepth.F32, 1);
 		_tmpImage = new IplImage(_capImage.Size, BitDepth.F32, 1);
 
+		_corners0 = GenGridCorners(_capImage.Width, _capImage.Height);
+
 		_opticalFlowWinSize = new CvSize(opticalFlowWinSize, opticalFlowWinSize);
-		_opticalFlowCrit = new CvTermCriteria(CriteriaType.Iteration | CriteriaType.Epsilon, 20, 0.01);
+		_opticalFlowCrit = new CvTermCriteria(CriteriaType.Iteration | CriteriaType.Epsilon, ofCritIterations, ofCritError);
 
 		_prevTime = _currTime = Time.time;
 	}
@@ -79,8 +79,6 @@ public class OpticalFlowWorker : MonoBehaviour {
 	void _CalculateOpticalFlow (System.Object result) {
 		_capImage = _cap.QueryFrame ();
 		Cv.ConvertImage(_capImage, _capGrayImage1, 0);
-		_nCorners = featureCount;
-		Cv.GoodFeaturesToTrack(_capGrayImage0, _eigImage, _tmpImage, out _corners0, ref _nCorners, featureQuality, featureMinDist);
 		Cv.CalcOpticalFlowPyrLK(_capGrayImage0, _capGrayImage1, _pyramidImage0, _pyramidImage1, _corners0, out _corners1, 
 		                        _opticalFlowWinSize, opticalFlowPyramid, out _opticalFlowStatus, out _trackErrors, _opticalFlowCrit, 0);
 		_capGrayImage1.Copy(_capGrayImage0);
@@ -97,11 +95,25 @@ public class OpticalFlowWorker : MonoBehaviour {
 		r.imageData = raw;
 		r.corners0 = _corners0;
 		r.corners1 = _corners1;
-		r.nCorners = _nCorners;
+		r.nCorners = _corners0.Length;
 		r.opticalFlowStatus = _opticalFlowStatus;
 		r.trackErrors = _trackErrors;
 
 		r.completed = true;
+	}
+
+	CvPoint2D32f[] GenGridCorners(int width, int height) {
+		var nx = (int)(width / featureSpace);
+		var ny = (int)(height / featureSpace);
+		var corners = new CvPoint2D32f[nx * ny];
+		var offset = featureSpace * 0.5f;
+		for (var y = 0; y < ny; y++) {
+			for (var x = 0; x < nx; x++) {
+				var index = x + y * nx;
+				corners[index] = new CvPoint2D32f(offset + x * featureSpace, offset + y * featureSpace);
+			}
+		}
+		return corners;
 	}
 
 	public class AsyncResult {

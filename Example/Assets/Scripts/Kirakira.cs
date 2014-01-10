@@ -3,7 +3,7 @@ using System.Collections;
 using OpenCvSharp;
 using System.IO;
 
-public class OpticalFlowTest : MonoBehaviour {
+public class Kirakira : MonoBehaviour {
 	public GameObject target;
 	public ParticleSystem particleSys;
 	public Material lineMat;
@@ -18,16 +18,12 @@ public class OpticalFlowTest : MonoBehaviour {
 	private Texture2D _tex;
 	private OpticalFlowWorker _worker;
 	private OpticalFlowWorker.AsyncResult _result, _prevResult;
+	private bool _firstTimeUpdate = true;
 
 	void Start () {
 		_worker = GetComponent<OpticalFlowWorker>();
 		_tex = new Texture2D(0, 0, TextureFormat.RGB24, false);
 		target.renderer.sharedMaterial.mainTexture = _tex;
-
-		var targetScale = target.transform.localScale;
-		var capSize = _worker.CaptureSize;
-		targetScale.x *= capSize.x / capSize.y;
-		target.transform.localScale = targetScale;
 
 		_prevResult = _result = _worker.CalculateOpticalFlow();
 	}
@@ -36,10 +32,22 @@ public class OpticalFlowTest : MonoBehaviour {
 		if (!_result.completed)
 			return;
 
+		if (_firstTimeUpdate) {
+			_firstTimeUpdate = false;
+			UpdateAspectRatio(_result.imageWidth, _result.imageHeight);
+		}
+
 		ShowImage(_result);
 		ShowParticles(_result);
+
 		_prevResult = _result;
 		_result = _worker.CalculateOpticalFlow();
+	}
+
+	void UpdateAspectRatio(int width, int height) {
+		var s = target.transform.localScale;
+		s.x = s.y * width / height;
+		target.transform.localScale = s;
 	}
 
 	void OnPostRender() {
