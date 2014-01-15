@@ -4,6 +4,8 @@ using OpenCvSharp;
 using System.IO;
 
 public class Vector : MonoBehaviour {
+	public const float R_TWO_PI = 1f / (2f * Mathf.PI);
+
 	public GameObject target;
 	public MeshFilter flowLine;
 	
@@ -62,6 +64,7 @@ public class Vector : MonoBehaviour {
 		var mesh = (flowLine.mesh == null) ? flowLine.mesh = new Mesh() : flowLine.mesh;
 		mesh.Clear();
 		var vertices = new Vector3[2 * r.nCorners];
+		var colors = new Color[vertices.Length];
 		var lines = new int[vertices.Length];
 		var rTexelSize = new Vector2(1f / r.imageWidth, 1f / r.imageHeight);
 		var limitSqrVelocity = limitVelocity * limitVelocity;
@@ -74,14 +77,22 @@ public class Vector : MonoBehaviour {
 			var v0 = new Vector3(c0.X * rTexelSize.x - 0.5f,  -(c0.Y * rTexelSize.y - 0.5f), 0f);
 			var v1 = new Vector3(c1.X * rTexelSize.x - 0.5f, -(c1.Y * rTexelSize.y - 0.5f), 0f);
 			var v = v1 - v0;
+			var rad = Mathf.Atan2(v.y, v.x);
+			if (rad < 0)
+				rad += 2 * Mathf.PI;
+			var color = HSBColor.ToColor(new HSBColor(rad * R_TWO_PI, 1f, 1f));
+
 			if (limitSqrVelocity < v.sqrMagnitude)
 				v = Vector3.zero;
 			vertices[baseIndex] = v0;
 			vertices[baseIndex + 1] = v0 + v;
+			colors[baseIndex] = color;
+			colors[baseIndex + 1] = color;
 			lines[baseIndex] = baseIndex;
 			lines[baseIndex + 1] = baseIndex + 1;
 		}
 		mesh.vertices = vertices;
+		mesh.colors = colors;
 		mesh.SetIndices(lines, MeshTopology.Lines, 0);
 		mesh.bounds = new Bounds(Vector3.zero, float.MaxValue * Vector3.one);
 	}
