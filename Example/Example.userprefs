@@ -1,9 +1,10 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Vector.cs">
     <Files>
-      <File FileName="Assets/Scripts/Vector.cs" Line="77" Column="42" />
-      <File FileName="Assets/Scripts/Thread/OpticalFlowWorker.cs" Line="36" Column="1" />
+      <File FileName="Assets/Scripts/Vector.cs" Line="1" Column="1" />
+      <File FileName="../../../../Downloads/NormalInversion/Assets/Shaders/ScaleColor.shader" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Vector.cs" Line="8" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
