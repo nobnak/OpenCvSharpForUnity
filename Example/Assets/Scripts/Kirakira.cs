@@ -2,6 +2,7 @@
 using System.Collections;
 using OpenCvSharp;
 using System.IO;
+using nobnak.OpenCV;
 
 public class Kirakira : MonoBehaviour {
 	public GameObject target;

@@ -5,7 +5,7 @@ using System.IO;
 using UnityEditor.Callbacks;
 
 public static class PostBuildScript {
-	public const string CONFIG_FILE_SRC = "Assets/Editor/PostBuild/config";
+	public const string CONFIG_FILE_SRC = "Assets/nobnak/OpenCV/Editor/PostBuild/config";
 	public const string CONFIG_FILE_DST = "Contents/Data/Managed/etc/mono/config";
 
 	[PostProcessBuild]
