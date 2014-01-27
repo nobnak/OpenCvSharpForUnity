@@ -17,16 +17,18 @@ public class Kirakira : MonoBehaviour {
 	public float particleVelocityThreshold = 1f;
 
 	private Texture2D _tex;
-	private OpticalFlowWorker _worker;
+	private OpticalFlowWorker _of;
 	private OpticalFlowWorker.AsyncResult _result, _prevResult;
 	private bool _firstTimeUpdate = true;
+	private CvPoint2D32f[] _corners0;
 
 	void Start () {
-		_worker = GetComponent<OpticalFlowWorker>();
+		_of = GetComponent<OpticalFlowWorker>();
 		_tex = new Texture2D(0, 0, TextureFormat.RGB24, false);
 		target.renderer.sharedMaterial.mainTexture = _tex;
 
-		_prevResult = _result = _worker.CalculateOpticalFlow();
+		_corners0 = FlowUtil.GenGridCorners(_of.width, _of.height, 50f);
+		_prevResult = _result = _of.CalculateOpticalFlow(_corners0);
 	}
 
 	void Update() {
@@ -42,7 +44,7 @@ public class Kirakira : MonoBehaviour {
 		ShowParticles(_result);
 
 		_prevResult = _result;
-		_result = _worker.CalculateOpticalFlow();
+		_result = _of.CalculateOpticalFlow(_corners0);
 	}
 
 	void UpdateAspectRatio(int width, int height) {

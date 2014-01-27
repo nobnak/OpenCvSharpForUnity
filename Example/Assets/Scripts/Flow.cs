@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using nobnak.OpenCV;
+using OpenCvSharp;
 
 [RequireComponent(typeof(OpticalFlowWorker))]
 public class Flow : MonoBehaviour {
@@ -12,16 +13,27 @@ public class Flow : MonoBehaviour {
 	private Texture2D _videoTex;
 	private OpticalFlowWorker.AsyncResult _ofResult;
 	private Mesh _flowMesh;
-	private Vector3[] _velocities;
+	private CvPoint2D32f[] _velocities;
+	
+	private float[] _cornerBirthTimes;
+	private CvPoint2D32f[] _corners0;
 
 	// Use this for initialization
 	void Start () {
 		_of = GetComponent<OpticalFlowWorker>();
 		_videoTex = new Texture2D(0, 0, TextureFormat.RGB24, false, false);
+		_flowMesh = new Mesh();
 
+		var mf = flow.GetComponent<MeshFilter>();
+		mf.sharedMesh = _flowMesh;
 		video.renderer.sharedMaterial.mainTexture = _videoTex;
 
-		_ofResult = _of.CalculateOpticalFlow();
+		_corners0 = FlowUtil.GenGridCorners(_of.width, _of.height, 50f);
+		_cornerBirthTimes = new float[_corners0.Length];
+		var t = Time.timeSinceLevelLoad;
+		for (var i = 0; i < _cornerBirthTimes.Length; i++)
+			_cornerBirthTimes[i] = t;
+		_ofResult = _of.CalculateOpticalFlow(_corners0);
 	}
 	
 	// Update is called once per frame
@@ -36,18 +48,13 @@ public class Flow : MonoBehaviour {
 			s.x = s.y * _ofResult.imageWidth / _ofResult.imageHeight;
 			video.transform.localScale = s;
 
-			Destroy(_flowMesh);
-			_flowMesh = FlowUtil.GenerateFlowMesh(_ofResult);
-			var mf = flow.GetComponent<MeshFilter>();
-			mf.sharedMesh = _flowMesh;
 		}
 		_videoTex.LoadRawTextureData(_ofResult.imageData);
 		_videoTex.Apply();
 
-		FlowUtil.CalculateFlowVelocities(_ofResult, _flowMesh, ref _velocities);
-		FlowUtil.UpdateMeshPositions(_ofResult, _flowMesh, _velocities, limitVelocity);
+		FlowUtil.CalculateFlowVelocities(_ofResult, ref _velocities);
+		FlowUtil.UpdateLineMesh(_ofResult, _flowMesh, _velocities, limitVelocity);
 
-		_of.UpdateInitialCorner(_ofResult.corners1);
-		_ofResult = _of.CalculateOpticalFlow();
+		_ofResult = _of.CalculateOpticalFlow(_ofResult.corners1);
 	}
 }

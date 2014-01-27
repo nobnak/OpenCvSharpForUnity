@@ -11,21 +11,25 @@ public class Vector : MonoBehaviour {
 	public float errorThreshold = 1;
 	public float limitVelocity = 50;
 
+	private Mesh _mesh;
 	private Texture2D _tex;
-	private OpticalFlowWorker _worker;
-	private MeshFilter _meshFilter;
+	private OpticalFlowWorker _of;
 
 	private OpticalFlowWorker.AsyncResult _result;
 	private bool _firstTimeUpdate = true;
-	private Vector3[] _velocities;
+	private CvPoint2D32f[] _velocities;
+
+	private OpenCvSharp.CvPoint2D32f[] _corners0;
 
 	void Start () {
-		_worker = GetComponent<OpticalFlowWorker>();
+		_of = GetComponent<OpticalFlowWorker>();
 		_tex = new Texture2D(0, 0, TextureFormat.RGB24, false);
-		_meshFilter = flow.GetComponent<MeshFilter>();
+		var mf = flow.GetComponent<MeshFilter>();
+		_mesh = mf.mesh = new Mesh();
 		background.renderer.sharedMaterial.mainTexture = _tex;
 
-		_result = _worker.CalculateOpticalFlow();
+		_corners0 = FlowUtil.GenGridCorners(_of.width, _of.height, 50f);
+		_result = _of.CalculateOpticalFlow(_corners0);
 	}
 
 	void Update() {
@@ -35,15 +39,14 @@ public class Vector : MonoBehaviour {
 		if (_firstTimeUpdate) {
 			_firstTimeUpdate = false;
 			UpdateAspectRatio(_result.imageWidth, _result.imageHeight);
-			_meshFilter.mesh = FlowUtil.GenerateFlowMesh(_result);
-			_velocities = new Vector3[_meshFilter.mesh.vertexCount / 2];
+			_velocities = new CvPoint2D32f[_mesh.vertexCount / 2];
 		}
 
 		ShowImage(_result);
-		FlowUtil.CalculateFlowVelocities(_result, _meshFilter.mesh, ref _velocities);
-		FlowUtil.UpdateMeshPositions(_result, _meshFilter.mesh, _velocities, limitVelocity);
+		FlowUtil.CalculateFlowVelocities(_result, ref _velocities);
+		FlowUtil.UpdateLineMesh(_result, _mesh, _velocities, limitVelocity);
 
-		_result = _worker.CalculateOpticalFlow();
+		_result = _of.CalculateOpticalFlow(_corners0);
 	}
 
 	void UpdateAspectRatio(int width, int height) {
@@ -54,7 +57,7 @@ public class Vector : MonoBehaviour {
 
 	void OnDestroy() {
 		Destroy(_tex);
-		Destroy(_meshFilter.mesh);
+		Destroy(_mesh);
 	}
 
 	public void ShowImage(OpticalFlowWorker.AsyncResult r) {

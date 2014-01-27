@@ -15,15 +15,13 @@ namespace nobnak.OpenCV {
 		public int ofCritIterations = 20;
 		public float ofCritError = 0.01f;
 
+		public int width, height;
+
 		private CvCapture _cap;
 		private IplImage _capImage, _capRgbImage;
 		private IplImage _capGrayImage0, _capGrayImage1;
 		private IplImage _pyramidImage0, _pyramidImage1;
 		private IplImage _eigImage, _tmpImage;
-
-		private CvPoint2D32f[] _corners0;
-		private CvPoint2D32f[] _corners1;
-		private int _nCorners;
 
 		private CvSize _subPixWinSize, _subPixZeroZone;
 		private CvTermCriteria _subPixCrit;
@@ -47,8 +45,9 @@ namespace nobnak.OpenCV {
 			_pyramidImage1 = new IplImage(new CvSize(_capImage.Width + 8, _capImage.Height/3), BitDepth.U8, 1);
 			_eigImage = new IplImage(_capImage.Size, BitDepth.F32, 1);
 			_tmpImage = new IplImage(_capImage.Size, BitDepth.F32, 1);
-
-			_corners0 = GenGridCorners(_capImage.Width, _capImage.Height);
+			Cv.ConvertImage(_capImage, _capGrayImage0, 0);
+			width = _capImage.Width;
+			height = _capImage.Height;
 
 			_opticalFlowWinSize = new CvSize(opticalFlowWinSize, opticalFlowWinSize);
 			_opticalFlowCrit = new CvTermCriteria(CriteriaType.Iteration | CriteriaType.Epsilon, ofCritIterations, ofCritError);
@@ -67,23 +66,25 @@ namespace nobnak.OpenCV {
 			if (_tmpImage != null) _tmpImage.Dispose();
 		}
 
-		public AsyncResult CalculateOpticalFlow() {
+		public AsyncResult CalculateOpticalFlow(CvPoint2D32f[] corners0) {
 			var r = new AsyncResult();
 			r.prevTime = _prevTime = _currTime;
 			r.currTime = _currTime = Time.time;
+			r.corners0 = corners0;
+			r.nCorners = corners0.Length;
 
 			ThreadPool.QueueUserWorkItem(_CalculateOpticalFlow, r);
 			return r;
 		}
-		public void UpdateInitialCorner(CvPoint2D32f[] corners) {
-			_corners0 = corners;
-		}
 
 		void _CalculateOpticalFlow (System.Object result) {
+			var r = (AsyncResult) result;
+
 			var startTime = HighResTime.UtcNow;
 			_capImage = _cap.QueryFrame ();
 			Cv.ConvertImage(_capImage, _capGrayImage1, 0);
-			Cv.CalcOpticalFlowPyrLK(_capGrayImage0, _capGrayImage1, _pyramidImage0, _pyramidImage1, _corners0, out _corners1, 
+			CvPoint2D32f[] corners1;
+			Cv.CalcOpticalFlowPyrLK(_capGrayImage0, _capGrayImage1, _pyramidImage0, _pyramidImage1, r.corners0, out corners1, 
 			                        _opticalFlowWinSize, opticalFlowPyramid, out _opticalFlowStatus, out _trackErrors, _opticalFlowCrit, 0);
 			_capGrayImage1.Copy(_capGrayImage0);
 
@@ -93,32 +94,15 @@ namespace nobnak.OpenCV {
 			_capRgbImage.GetRawData(out rawPtr);
 			Marshal.Copy(rawPtr, raw, 0, raw.Length);
 
-			var r = (AsyncResult) result;
 			r.imageWidth = _capGrayImage0.Width;
 			r.imageHeight = _capGrayImage0.Height;		
 			r.imageData = raw;
-			r.corners0 = _corners0;
-			r.corners1 = _corners1;
-			r.nCorners = _corners0.Length;
+			r.corners1 = corners1;
 			r.opticalFlowStatus = _opticalFlowStatus;
 			r.trackErrors = _trackErrors;
 			r.elapsedMs = (float)((HighResTime.UtcNow - startTime).TotalMilliseconds);
 
 			r.completed = true;
-		}
-
-		CvPoint2D32f[] GenGridCorners(int width, int height) {
-			var nx = (int)(width / featureSpace);
-			var ny = (int)(height / featureSpace);
-			var corners = new CvPoint2D32f[nx * ny];
-			var offset = featureSpace * 0.5f;
-			for (var y = 0; y < ny; y++) {
-				for (var x = 0; x < nx; x++) {
-					var index = x + y * nx;
-					corners[index] = new CvPoint2D32f(offset + x * featureSpace, offset + y * featureSpace);
-				}
-			}
-			return corners;
 		}
 
 		public class AsyncResult {
