@@ -1,1 +1,0 @@
-C:\Users\nobu\Documents\SVN\OpencvSharp\OpenCvSharp.CPlusPlus\obj\x64\Debug\OpenCvSharp.CPlusPlus.csprojResolveAssemblyReference.cache

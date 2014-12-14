@@ -1,1 +1,0 @@
-C:\Users\nobu\Documents\SVN\OpencvSharp\OpenCvSharp.Gpu\obj\Debug\OpenCvSharp.Gpu.csprojResolveAssemblyReference.cache
